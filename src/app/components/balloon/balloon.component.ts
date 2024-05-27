@@ -1,4 +1,12 @@
-import { Component, ElementRef, OnInit, inject, input } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  OnInit,
+  Output,
+  inject,
+  input,
+} from '@angular/core';
 import { IBalloon } from '../../balloon.interface';
 import { AnimationBuilder, animate, style } from '@angular/animations';
 
@@ -13,6 +21,7 @@ export class BalloonComponent implements OnInit {
   balloon = input.required<IBalloon>();
   animBuilder = inject(AnimationBuilder);
   elRef = inject(ElementRef);
+  @Output() balloonPopped = new EventEmitter<string>();
 
   ngOnInit(): void {
     this.animateBalloon();
@@ -25,7 +34,7 @@ export class BalloonComponent implements OnInit {
       buffer;
     const leftPosition = Math.floor(Math.random() * maxWidth);
     const minSpeed = 5;
-    const speedVariation = 5
+    const speedVariation = 5;
     const speed = minSpeed + Math.random() * speedVariation;
     const flyAnimation = this.animBuilder.build([
       style({
@@ -46,5 +55,9 @@ export class BalloonComponent implements OnInit {
     player.onDone(() => {
       console.log('animation done');
     });
+  }
+
+  pop() {
+    this.balloonPopped.emit(this.balloon().id);
   }
 }
