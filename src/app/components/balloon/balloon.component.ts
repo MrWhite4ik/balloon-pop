@@ -22,6 +22,7 @@ export class BalloonComponent implements OnInit {
   animBuilder = inject(AnimationBuilder);
   elRef = inject(ElementRef);
   @Output() balloonPopped = new EventEmitter<string>();
+  @Output() balloonMissed = new EventEmitter();
 
   ngOnInit(): void {
     this.animateBalloon();
@@ -44,7 +45,7 @@ export class BalloonComponent implements OnInit {
         bottom: 0,
       }),
       animate(
-        `${speed}s ease-out`,
+        `${speed}s ease-in-out`,
         style({
           translate: `${leftPosition}px -100vh`,
         })
@@ -54,6 +55,7 @@ export class BalloonComponent implements OnInit {
     player.play();
     player.onDone(() => {
       console.log('animation done');
+      this.balloonMissed.emit()
     });
   }
 
