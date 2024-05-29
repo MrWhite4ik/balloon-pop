@@ -23,5 +23,9 @@ export class AppComponent {
     this.score++;
     this.balloons = this.balloons.filter((balloon) =>
     balloon.id !== balloonId);
+    this.balloons.push(new Balloon())
+  }
+  balloonMissHandler() {
+    this.missed++
   }
 }
